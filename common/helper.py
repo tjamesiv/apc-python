@@ -9,7 +9,7 @@ from ipywidgets import IntSlider, fixed
 # Need to be able to change the limits
 # Or explicitly set x/y min/max
 def plot_complex_list(complex_list, style="vectors", colors=False, limit=0):
-    plt.grid(which='major')
+    # plt.grid(which='major')
     for x in range(len(complex_list)):
         # print(str(complex_list[x][1]))
         if colors is True:
@@ -55,9 +55,12 @@ def plot_complex_list(complex_list, style="vectors", colors=False, limit=0):
 #     plt.show()
 
 
-# def render_plot(complex_list, n):
-#     print("n = {}".format(n))
-#     plot_complex_list(complex_list[:n])
+def plot_complex_grid(complex_list):
+
+
+def render_plot(complex_list, num_iterations):
+    print("Number of iterations = {}".format(num_iterations))
+    plot_complex_list(complex_list[:num_iterations], style="points")
 
 
 def round_complex(z):
