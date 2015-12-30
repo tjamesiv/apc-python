@@ -6,6 +6,69 @@ from ipywidgets import widgets
 from ipywidgets import IntSlider, fixed
 
 
+fig_size = plt.rcParams["figure.figsize"]
+fig_size[0] = 6.0
+fig_size[1] = 6.0
+plt.rcParams["figure.figsize"] = fig_size
+
+
+# Make sure f has a keyword argument of max_iterations
+def iterate_function_on_grid(f, c=0, limit=2, resolution=100,
+                             max_iterations=20, zoom=False, boundary_box=[]):
+
+    if zoom is True:
+        xmin = boundary_box[0]
+        xmax = boundary_box[1]
+        ymin = boundary_box[2]
+        ymax = boundary_box[3]
+    else:
+        # possibly x/y backwards
+        xmax = ymin = limit
+        xmin = ymax = -limit
+
+    xx, yy = np.meshgrid(np.linspace(xmin, xmax, resolution + 1),
+                         np.linspace(ymin, ymax, resolution + 1),
+                         indexing='xy')
+    coordinate_matrix = xx + 1j * yy
+
+    vfunc = np.vectorize(f, excluded=['max_iterations', 'c'])
+
+    if c == 0:
+        my_grid = vfunc(coordinate_matrix, max_iterations=max_iterations)
+    else:
+        my_grid = vfunc(coordinate_matrix, max_iterations=max_iterations, c=c)
+
+    return my_grid
+
+
+# Also create a "zoom" version for xmin, etc
+def plot_complex_grid(complex_grid, limit=2, color_gradient="Purples",
+                      zoom=False, boundary_box=[]):
+
+    if zoom is True:
+        xmin = boundary_box[0]
+        xmax = boundary_box[1]
+        ymin = boundary_box[2]
+        ymax = boundary_box[3]
+    else:
+        # possibly x/y backwards
+        xmax = ymin = limit
+        xmin = ymax = -limit
+
+    fig, ax = plt.subplots()
+
+    plt.ylabel('Imaginary')
+    plt.xlabel('Real')
+
+    ax.grid(True, which='both')
+    ax.axhline(y=0, color='k')
+    ax.axvline(x=0, color='k')
+
+    plt.imshow(complex_grid, extent=[xmin, xmax, ymin, ymax],
+               cmap=color_gradient, alpha=1, interpolation="none")
+    plt.show()
+
+
 # Need to be able to change the limits
 # Or explicitly set x/y min/max
 def plot_complex_list(complex_list, style="vectors", colors=False, limit=0):
@@ -29,8 +92,6 @@ def plot_complex_list(complex_list, style="vectors", colors=False, limit=0):
                     'b.-')
             elif style == "points":
                 plt.plot(complex_list[x].real, complex_list[x].imag, 'bo')
-            elif style == "pixels":
-                plt.plot(complex_list[x].real, complex_list[x].imag, 'b,')
             else:
                 print("Style " + style + " not defined.")
                 return
@@ -48,14 +109,6 @@ def plot_complex_list(complex_list, style="vectors", colors=False, limit=0):
     ax.axhline(y=0, color='k')
     ax.axvline(x=0, color='k')
     plt.show()
-
-
-# def plot_complex(z):
-#     plt.plot([0, z.real], [0, z.imag], 'b.-')
-#     plt.show()
-
-
-def plot_complex_grid(complex_list):
 
 
 def render_plot(complex_list, num_iterations):
