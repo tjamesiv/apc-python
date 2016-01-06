@@ -52,8 +52,8 @@ def plot_complex_grid(complex_grid, limit=2, color_gradient="Purples",
         ymax = boundary_box[3]
     else:
         # possibly x/y backwards
-        xmax = ymin = limit
-        xmin = ymax = -limit
+        xmax = ymax = limit
+        xmin = ymin = -limit
 
     fig, ax = plt.subplots()
 
