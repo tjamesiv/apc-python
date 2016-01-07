@@ -17,10 +17,10 @@ def iterate_function_on_grid(f, c=0, limit=2, resolution=100,
                              max_iterations=20, zoom=False, boundary_box=[]):
 
     if zoom is True:
-        xmin = boundary_box[0]
-        xmax = boundary_box[1]
-        ymin = boundary_box[2]
-        ymax = boundary_box[3]
+        xmin = boundary_box[0]  # -limit
+        xmax = boundary_box[1]  # limit
+        ymin = -boundary_box[2]  # limit
+        ymax = -boundary_box[3]  # -limit
     else:
         # possibly x/y backwards
         xmax = ymin = limit
