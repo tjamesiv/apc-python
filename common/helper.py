@@ -19,12 +19,17 @@ def iterate_function_on_grid(f, c=0, limit=2, resolution=100,
     if zoom is True:
         xmin = boundary_box[0]  # -limit
         xmax = boundary_box[1]  # limit
-        ymin = -boundary_box[2]  # limit
-        ymax = -boundary_box[3]  # -limit
+        ymin = boundary_box[2]  # limit
+        ymax = boundary_box[3]  # -limit
     else:
         # possibly x/y backwards
         xmax = ymin = limit
         xmin = ymax = -limit
+
+    # print("xmin=" + str(xmin) + " " +
+    #       "xmax=" + str(xmax) + " " +
+    #       "ymin=" + str(ymin) + " " +
+    #       "ymax=" + str(ymax))
 
     xx, yy = np.meshgrid(np.linspace(xmin, xmax, resolution + 1),
                          np.linspace(ymin, ymax, resolution + 1),
@@ -54,6 +59,11 @@ def plot_complex_grid(complex_grid, limit=2, color_gradient="Purples",
         # possibly x/y backwards
         xmax = ymax = limit
         xmin = ymin = -limit
+
+    # print("xmin=" + str(xmin) + " " +
+    #       "xmax=" + str(xmax) + " " +
+    #       "ymin=" + str(ymin) + " " +
+    #       "ymax=" + str(ymax))
 
     fig, ax = plt.subplots()
 
